@@ -35,11 +35,58 @@ if (isset($_POST['post'])) {
             <input type="submit" name="post" id="post_button" value="Post">
         </form>
 
-        <?php 
-        
-        $user_obj = new User($con, $userLoggedIn);
-        echo $user_obj->getFirstAndLastName();
-        
-        
-        ?>
+        <div class="posts_area"></div>
+        <img src="assets/images/icons/loading.gif" alt="loading screen" id="loading">
     </div>
+
+    <script>
+        var userLoggedIn = '<?php echo $userLoggedIn; ?>';
+        $(document).ready(function() {
+            $('#loading').show();
+            //ajax request for loading ifrst posts
+            $.ajax({
+                url:  "includes/handlers/ajax_load_posts.php",
+                type: "POST",
+                data: "page=1&userLoggedIn=" + userLoggedIn,
+                cache: false,
+
+                success: function(data) {
+                    $("#loading").hide();
+                    $(".posts_area").html(data);
+                    
+                }
+            });
+
+            $(window).scroll(function() {
+                var heightm = $('.posts_area').height(); //div containing posts
+                var scroll_top = $(this).scrollTop();
+                var page = $('.posts_area').find('.nextPage').val();
+                var noMorePosts = $('.posts_area').find('.noMorePosts').val();
+
+                if ((document.body.scrollHeight == document.body.scrollTop + window.innerHeight) && noMorePosts == 'false') {
+                    $('#loading').show();
+                    $.ajax({
+                    url:  "includes/handlers/ajax_load_posts.php",
+                    type: "POST",
+                    data: "page=" + page + "&userLoggedIn=" + userLoggedIn,
+                    cache: false,
+
+                    success: function(response) {
+
+                        $('.posts_area').find('.nextPage').remove(); //removes current .nextpage
+                        $('.posts_area').find('.noMorePosts').remove(); //removes current .nextpage
+
+                        $("#loading").hide();
+                        $(".posts_area").append(response);
+                    
+                            }
+                        });
+                } //End if 
+
+                return false;
+
+            }); //End (window).scroll function
+        });
+
+
+    </script>
