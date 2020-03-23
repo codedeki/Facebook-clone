@@ -16,6 +16,13 @@ class User {
         return $row['firstName'] . " " . $row['lastName'];
     }
 
+    public function getProfilePic() {
+        $username = $this->user['username'];
+        $query = mysqli_query($this->con, "SELECT profilePic FROM users WHERE username='$username'");
+        $row = mysqli_fetch_array($query);
+        return $row['profilePic'];
+    }
+
     public function getNumPosts() {
         $username = $this->user['username'];
         $query = mysqli_query($this->con, "SELECT numPosts FROM users WHERE username='$username'");
@@ -34,6 +41,17 @@ class User {
         if ($row['userClosed'] == 'yes') {  
             return true;
         } 
+        else {
+            return false;
+        }
+    }
+
+    public function isFriend($username_to_check) {
+        $usernameComma = "," . $username_to_check . ",";
+
+        if ((strstr($this->user['friendArray'], $usernameComma) || $username_to_check == $this->user['username'])) {
+            return true;
+        }
         else {
             return false;
         }
