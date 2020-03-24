@@ -1,9 +1,9 @@
 <?php
-include("includes/handlers/config.php");
-include("includes/footer.php");
-include("includes/header.php");
-include("includes/classes/User.php");
-include("includes/classes/Post.php");
+include_once("includes/handlers/config.php");
+include_once("includes/footer.php");
+include_once("includes/header.php");
+include_once("includes/classes/User.php");
+include_once("includes/classes/Post.php");
 
 if (isset($_POST['post'])) {
     $post = new Post($con, $userLoggedIn);
@@ -46,7 +46,7 @@ if (isset($_POST['post'])) {
             $('#loading').show();
             //ajax request for loading ifrst posts
             $.ajax({
-                url:  "includes/handlers/ajax_load_posts.php",
+                url:  "includes/handlers/ajax/ajax_load_posts.php",
                 type: "POST",
                 data: "page=1&userLoggedIn=" + userLoggedIn,
                 cache: false,
@@ -67,7 +67,7 @@ if (isset($_POST['post'])) {
                 if ((document.body.scrollHeight == document.body.scrollTop + window.innerHeight) && noMorePosts == 'false') {
                     $('#loading').show();
                     $.ajax({
-                    url:  "includes/handlers/ajax_load_posts.php",
+                    url:  "includes/handlers/ajax/ajax_load_posts.php",
                     type: "POST",
                     data: "page=" + page + "&userLoggedIn=" + userLoggedIn,
                     cache: false,

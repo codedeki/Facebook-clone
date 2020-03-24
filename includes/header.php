@@ -1,5 +1,7 @@
 <?php
 include("includes/handlers/config.php");
+include("includes/classes/User.php");
+include("includes/classes/Post.php");
 
 //user must be logged in to access index.php
 if(isset($_SESSION['username'])) {
@@ -21,6 +23,7 @@ else {
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="assets/js/bootstrap.js"></script>
+    <script src="assets/js/submit_post.js"></script>
     <!-- CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
@@ -46,7 +49,7 @@ else {
         <a href="#">
             <i class="fa fa-bell-o fa-lg"></i>
         </a>
-        <a href="#">
+        <a href="requests.php">
             <i class="fa fa-users fa-lg"></i>
         </a>
         <a href="#">
