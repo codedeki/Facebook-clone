@@ -73,14 +73,24 @@ if (isset($_POST['respond_request'])) {
            ?>
     
         </form>
-    <input type="submit" class="deep_blue" data-toggle="modal" data-target="#post_form" value="Post Something">
+        <input type="submit" class="deep_blue" data-toggle="modal" data-target="#post_form" value="Post Something">
+
+    <?php 
+    
+    if ($userLoggedIn != $username) {
+        echo '<div class="profile_info_bottom">';
+                echo $logged_in_user_obj->getMutualFriends($username) . " Mutual friends";
+                echo '</div>';
+    }
+    
+    
+    ?>
+
     </div>
 
-
-
-    <div class="main_column column">
-        <?php echo $username; ?>
-
+    <div class="profile_main_column column">
+    <div class="posts_area"></div>
+        <img src="assets/images/icons/loading.gif" alt="loading screen" id="loading">
     </div>
 
 <!-- Modal -->
@@ -88,13 +98,15 @@ if (isset($_POST['respond_request'])) {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Post something!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        <h4 class="modal-title" id="postModalLabel">Post something!</h4>
       </div>
+
       <div class="modal-body">
         <p>This will appear on your profile page and  newsfeed for your friends to see!</p>
+        
         <form class="profile_post" action="" method="POST">
             <div class="form-group">
                 <textarea name="post_body" class="form-control"></textarea>
@@ -104,9 +116,63 @@ if (isset($_POST['respond_request'])) {
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" name="post_button" id="submit_profile_post">Post</button>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+        var userLoggedIn = '<?php echo $userLoggedIn; ?>';
+        var profileUsername = '<?php echo $username; ?>';
+
+        $(document).ready(function() {
+            $('#loading').show();
+            //ajax request for loading first posts
+            $.ajax({
+                url:  "includes/handlers/ajax/ajax_load_profile_posts.php",
+                type: "POST",
+                data: "page=1&userLoggedIn=" + userLoggedIn + "&profileUsername=" + profileUsername,
+                cache: false,
+
+                success: function(data) {
+                    $("#loading").hide();
+                    $(".posts_area").html(data);
+                    
+                }
+            });
+
+            $(window).scroll(function() {
+                var height = $('.posts_area').height(); //div containing posts
+                var scroll_top = $(this).scrollTop();
+                var page = $('.posts_area').find('.nextPage').val();
+                var noMorePosts = $('.posts_area').find('.noMorePosts').val();
+
+                if ((document.body.scrollHeight == document.body.scrollTop + window.innerHeight) && noMorePosts == 'false') {
+                    $('#loading').show();
+                var ajaxReq = $.ajax({
+                    url:  "includes/handlers/ajax/ajax_load_profile_posts.php",
+                    type: "POST",
+                    data: "page=" + page + "&userLoggedIn=" + userLoggedIn + "&profileUsername=" + profileUsername,
+                    cache: false,
+
+                    success: function(response) {
+
+                        $('.posts_area').find('.nextPage').remove(); //removes current .nextpage
+                        $('.posts_area').find('.noMorePosts').remove(); //removes current .nextpage
+
+                        $("#loading").hide();
+                        $(".posts_area").append(response);
+                    
+                            }
+                        });
+                } //End if 
+
+                return false;
+
+            }); //End (window).scroll function
+        });
+
+
+    </script>

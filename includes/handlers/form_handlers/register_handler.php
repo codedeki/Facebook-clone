@@ -1,6 +1,7 @@
 <?php
 include("includes/handlers/config.php");
 
+
 $fname = ""; //first name
 $lname = ""; //last name
 $em = ""; //emails

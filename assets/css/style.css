@@ -313,6 +313,18 @@ textarea:focus {
     background-color: #0043f0;
 }
 
+/* -------------------Index Page buttons STYLES-------------------*/
+
+.delete_button {
+    height: 22px;
+    width: 22px;
+    padding: 0;
+    float: right;
+    border-radius: 4px;
+    right: -15px;
+    position: relative;
+}
+
 /* -------------------Requests Page STYLES -------------------*/
 
 #accept_button {
@@ -337,4 +349,17 @@ textarea:focus {
 
 .main_column form {
     margin-top: 20px;
+}
+
+/* -------------------Profile Page STYLES -------------------*/
+
+.profile_main_column {
+    min-width: 675px;
+    float: left;
+    width: 70%;
+    z-index: -1;
+}
+
+.profile_info_bottom {
+   margin: 10 0 0 7px; 
 }

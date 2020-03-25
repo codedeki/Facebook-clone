@@ -1,7 +1,7 @@
 <?php
 include("includes/handlers/config.php");
-include("includes/handlers/register_handler.php");
-include("includes/handlers/login_handler.php");
+include("includes/handlers/form_handlers/register_handler.php");
+include("includes/handlers/form_handlers/login_handler.php");
 ?>
 
 <!DOCTYPE html>

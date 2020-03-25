@@ -59,7 +59,7 @@ if (isset($_POST['post'])) {
             });
 
             $(window).scroll(function() {
-                var heightm = $('.posts_area').height(); //div containing posts
+                var height = $('.posts_area').height(); //div containing posts
                 var scroll_top = $(this).scrollTop();
                 var page = $('.posts_area').find('.nextPage').val();
                 var noMorePosts = $('.posts_area').find('.noMorePosts').val();

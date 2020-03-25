@@ -1,3 +1,4 @@
 .htaccess
 assets/css/bootstrap.css
 assets/js/bootstrap.js
+assets/js/bootbox.min.js
