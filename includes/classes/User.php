@@ -41,6 +41,12 @@ class User {
         return $this->user['username'];
     }
 
+    public function getNumberOfFriendRequests() {
+        $username = $this->user['username'];
+        $query = mysqli_query($this->con, "SELECT * FROM friendRequests WHERE userTo='$username'");
+        return mysqli_num_rows($query);
+    }
+
     public function isClosed() {
         $username = $this->user['username'];
         $query = mysqli_query($this->con, "SELECT userClosed FROM users WHERE username='$username'");
