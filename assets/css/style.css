@@ -480,3 +480,39 @@ textarea:focus {
 .tab-content {
     margin-top: 25px;
 }
+
+.dropdown_data_window {
+	background-color: #fff;
+	border: 1px solid #DADADA;
+	border-radius: 0 0 8px 8px;
+	border-top: none;
+	width: 300px;
+	position: absolute;
+	right: 10px;
+	top: 40px;
+    overflow-y: scroll;
+    border: none;
+    
+}
+.notification_badge {
+	padding: 3px 7px;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	background-color: #f80;
+	border-radius: 12px;
+	position: absolute;
+	left: 9px;
+	top: -6.5px;
+}
+
+.modal-body p{
+	line-height: 1.33em;
+}
+.noMoreDropdownData {
+	padding-top: 50px;
+}
