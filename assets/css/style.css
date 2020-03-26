@@ -108,7 +108,7 @@ nav a:hover {
     float: right;
     width: 70%;
     z-index: -1;
-    min-height: 160px;
+    min-height: 170px;
 }
 
 .post_form {
@@ -362,4 +362,121 @@ textarea:focus {
 
 .profile_info_bottom {
    margin: 10 0 0 7px; 
+}
+
+/* -------------------Messages Page STYLES -------------------*/
+
+#message_textarea {
+    width: 85%;
+    margin-right: 8px;
+    border-radius: 5px;
+    resize: none;
+    border: 1px solid #d3d3d3;
+    font-size: 12px;
+}
+
+#message_submit {
+    width: 120px;
+    height: 41px;
+    border: none;
+    border-radius: 10px;
+    background-color: #20aae5;
+    font-family: "Bellota-BoldItalic", sans-serif;
+    color: #fff;
+    text-shadow: #73b6e2 0.5px 0.5px 0px;
+    font-size: 90%;
+    position: absolute;
+    outline: 0;
+    margin: 0;
+}
+
+.message {
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 5px 10px;
+    display: inline-block;
+    color: #fff;
+}
+
+.message#blue {
+    background-color: #20aae5;
+    border-color: #2980b9;
+    float: right;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.message#green {
+    background-color: #2ecc71;
+    border-color: #27ae60;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.loaded_messages {
+    height: 65%;
+    min-height: 300px;
+    max-height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    scroll-behavior: smooth;
+}
+
+.loaded_conversations {
+    max-height: 216px;
+    overflow-y: scroll;
+}
+
+.user_found_messages {
+    border-bottom: 1px solid #d3d3d3;
+    padding: 8px 8px 10px 8px;
+}
+
+.user_found_messages:hover {
+    background-color: #d3d3d3;
+}
+
+.user_found_messages img { 
+    height: 35px;
+    float: left;
+}
+
+#grey {
+    color: #8c8c8c;
+}
+
+.resultDisplay {
+    padding: 5px 5px 0 5px;
+    height: 60px;
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.resultDisplay a {
+    float: none;
+}
+
+.resultDisplay:hover {
+    background-color: #ebebeb;
+    text-decoration: none;
+}
+
+.liveSearchProfilePic img {
+    height: 50px;
+    border-radius: 25px;
+    margin: 1px 12px 0 2px;
+    float: left;
+}
+
+.liveSearch {
+    background-color: transparent;
+    color: #1e96ca;
+}
+
+.liveSearchText p {
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+.tab-content {
+    margin-top: 25px;
 }

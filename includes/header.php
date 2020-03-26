@@ -2,6 +2,7 @@
 include("includes/handlers/config.php");
 include("includes/classes/User.php");
 include("includes/classes/Post.php");
+include("includes/classes/Message.php");
 
 //user must be logged in to access index.php
 if(isset($_SESSION['username'])) {
@@ -44,7 +45,7 @@ else {
         <a href="index.php">
             <i class="fa fa-home fa-lg"></i>
         </a>
-        <a href="#">
+        <a href="messages.php">
             <i class="fa fa-envelope fa-lg"></i>
         </a>
         <a href="#">
