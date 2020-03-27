@@ -2,7 +2,6 @@
 
 include("../config.php");
 include("../../classes/User.php");
-include("../../classes/Message.php");
 
 $query = $_POST['query'];
 $userLoggedIn = $_POST['userLoggedIn'];
@@ -31,7 +30,7 @@ if ($query != "") {
             $mutual_friends = $user->getMutualFriends($row['username']) . " friends in common";
         }
         else {
-            $mutual_friends = "";
+            $mutual_friends == "";
         }
 
         echo "<div class='resultDisplay'>
