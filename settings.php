@@ -38,7 +38,7 @@ include("includes/handlers/form_handlers/settings_handler.php");
 
         <?php echo $password_message; ?>
 
-        <input type="submit" name="update_password" id="update_password" value="Update Password" class="info settings_submit">
+        <input type="submit" name="update_password" id="save_details" value="Update Password" class="info settings_submit">
 
     </form>
 

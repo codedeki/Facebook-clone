@@ -41,7 +41,7 @@ if (isset($_POST['update_password'])) {
             else {
                 $new_password_md5 = md5($new_password_1);
                 $password_query = mysqli_query($con, "UPDATE users SET password='$new_password_md5' WHERE username='$userLoggedIn'");
-                $password_message = "Pasword has been changed!<br><br>";
+                $password_message = "Password has been changed!<br><br>";
             }
         }
         else {
@@ -49,7 +49,7 @@ if (isset($_POST['update_password'])) {
         }
     }
     else {
-        $password_message = "The old password is incorrect";
+        $password_message = "The old password is incorrect<br><br>";
     }
 }
 else {

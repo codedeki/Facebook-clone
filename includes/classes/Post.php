@@ -8,7 +8,7 @@ class Post {
         $this->user_obj = new User($con, $user);
     }
 
-    public function submitPost($body, $user_to) {
+    public function submitPost($body, $user_to, $imageName) {
         $body = strip_tags($body); //remove html tags
         $body = mysqli_real_escape_string($this->con, $body);
 
@@ -18,6 +18,22 @@ class Post {
         $check_empty = preg_replace('/\s+/', '', $body); //delets all spaces
 
         if ($check_empty != "") {
+
+            //for posting & embedding YouTube video links onto page: remove spaces from text around links
+            $body_array = preg_split("/\s+/", $body);
+
+            foreach($body_array as $key => $value) {
+                if (strpos($value, "www.youtube.com/watch?v=") !== false) {
+                    //remove extra length from links (e.g. if user posts a video from a playlist)
+                    $link = preg_split("!&!", $value);
+                    $value = preg_replace("!watch\?v=!", "embed/", $link[0]); //link[0] to ensure we use shortest link possible
+                    $value = "<br><iframe width=\'420\' height=\'315\' src=\'" . $value . "\'></iframe><br>";
+                    $body_array[$key] = $value;
+                }
+            }
+
+            //separate all links with space
+            $body = implode(" ", $body_array);
 
             //current date and time
             $date_added = date("Y-m-d H:i:s");
@@ -29,7 +45,7 @@ class Post {
             }
 
             //insert post
-            $query = mysqli_query($this->con, "INSERT INTO posts VALUES('', '$body', '$added_by', '$user_to', '$date_added', 'no', 'no', '0')");
+            $query = mysqli_query($this->con, "INSERT INTO posts VALUES('', '$body', '$added_by', '$user_to', '$date_added', 'no', 'no', '0', '$imageName')");
             $returned_id = mysqli_insert_id($this->con);
 
             //insert notification
@@ -42,8 +58,74 @@ class Post {
             $num_posts = $this->user_obj->getNumPosts();
             $num_posts++;
             $update_query = mysqli_query($this->con, "UPDATE users SET numPosts='$num_posts' WHERE username='$added_by'");
+
+            //add trending words
+            $stopWords = "a about above across after again against all almost alone along already
+            also although always among am an and another any anybody anyone anything anywhere are 
+            area areas around as ask asked asking asks at away b back backed backing backs be became
+            because become becomes been before began behind being beings best better between big 
+            both but by c came can cannot case cases certain certainly clear clearly come could
+            d did differ different differently do does done down down downed downing downs during
+            e each early either end ended ending ends enough even evenly ever every everybody
+            everyone everything everywhere f face faces fact facts far felt few find finds first
+            for four from full fully further furthered furthering furthers g gave general generally
+            get gets give given gives go going good goods got great greater greatest group grouped
+            grouping groups h had has have having he her here herself high high high higher
+            highest him himself his how however i im if important in interest interested interesting
+            interests into is it its itself j just k keep keeps kind knew know known knows
+            large largely last later latest least less let lets like likely long longer
+            longest m made make making man many may me member members men might more most
+            mostly mr mrs much must my myself n necessary need needed needing needs never
+            new new newer newest next no nobody non noone not nothing now nowhere number
+            numbers o of off often old older oldest on once one only open opened opening
+            opens or order ordered ordering orders other others our out over p part parted
+            parting parts per perhaps place places point pointed pointing points possible
+            present presented presenting presents problem problems put puts q quite r
+            rather really right right room rooms s said same saw say says second seconds
+            see seem seemed seeming seems sees several shall she should show showed
+            showing shows side sides since small smaller smallest so some somebody
+            someone something somewhere state states still still such sure t take
+            taken than that the their them then there therefore these they thing
+            things think thinks this those though thought thoughts three through
+            thus to today together too took toward turn turned turning turns two
+            u under until up upon us use used uses v very w want wanted wanting
+            wants was way ways we well wells went were what when where whether
+            which while who whole whose why will with within without work
+            worked working works would x y year years yet you young younger
+            youngest your yours z lol haha omg hey ill iframe wonder else like 
+            hate sleepy reason for some little yes bye choose";
+
+            //split white space
+            $stopWords = preg_split("/[\s,]/", $stopWords);
+            //replace any trending words that are not letter or number with empty space
+            $no_punctuation = preg_replace("/[^a-zA-Z 0-9]+/", "", $body);
+
+            if (strpos($no_punctuation, "height") === false && strpos($no_punctuation, "width") === false 
+                    && strpos($no_punctuation, "http") === false) {
+                        $no_punctuation = preg_split("/[\s,]+/", $no_punctuation);
+
+                        foreach ($stopWords as $value) {
+                            foreach ($no_punctuation as $key => $value2) {}
+                            if (strtolower($value) == strtolower($value2))
+                                $no_punctuation[$key] = "";
+                        }
+                    }
+                    foreach ($no_punctuation as $value) {
+                        $this->calculateTrend(ucfirst($value));
+                    }
         }
     }
+
+    public function calculateTrend($term) {
+        if ($term != '') {
+            $query = mysqli_query($this->con, "SELECT * FROM trends WHERE title='$term'");
+
+            if (mysqli_num_rows($query) == 0) 
+                $insert_query = mysqli_query($this->con, "INSERT INTO trends(title, hits) VALUES ('$term', '1')");
+            else 
+                $insert_query = mysqli_query($this->con, "UPDATE trends SET hits=hits+1 WHERE title='$term'");
+    }
+}
 
     public function loadPostsFriends($data, $limit) {
 
@@ -69,6 +151,7 @@ class Post {
                 $body = $row['body'];
                 $added_by = $row['addedBy'];
                 $date_time = $row['dateAdded'];
+                $imagePath = $row['image'];
 
                 //Prepare user_to string so it can be include even if not posted to a user
 
@@ -204,6 +287,15 @@ class Post {
                         $time_message = $interval->s . " seconds ago";
                     }
                 }
+
+                if ($imagePath != "") {
+                    $imageDiv = "<div class='postedImage'>
+                                    <img src='$imagePath'>
+                                </div>";
+                } else {
+                    $imageDiv = "";
+                }
+
                 $str .= "<div class='status_post' onclick='javascript:toggle$id()'>
                             <div class='post_profile_pic'>
                             <a href='$added_by'> 
@@ -219,6 +311,7 @@ class Post {
                             <div id='post_body'>
                                 $body
                                 <br>
+                                $imageDiv
                                 <br>
                                 <br>
                             </div>

@@ -647,3 +647,26 @@ textarea:focus {
     color: #fff;
     margin-bottom: 10px;
 }
+
+.trending_title {
+    font-family: 'Bellota-BoldItalic', sans-serif;
+    text-shadow: #73b6e2 0.5px 0.5px 0px;
+    color: #20aae5;
+}
+
+.postedImage img {
+    max-height: 300px;
+    max-width: 100%;
+    display: block;
+    margin: 10px auto;
+}
+
+#fileToUpload {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 5px;
+    color: #fff;
+    margin-bottom: 10px;
+    background-color: #3498db;
+    width: 29%;
+}
